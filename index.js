@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const cTable = require('console.table');
+const Queries = require('./queryFunctions');
+
 
 const db = mysql.createConnection(
     {
@@ -36,23 +38,20 @@ function selectUse() {
 }
 
 function handleViewDepartments() {
-    db.query('SELECT * from departments', function (err, results) {
-        console.table(results);
-    });
+    const data = Queries.viewDepartments();
+    console.table(data);
     selectUse();
 }
 
 function handleViewRoles() {
-    db.query('SELECT * from roles', function (err, results) {
-        console.table(results);
-    });
+    const data = Queries.viewRoles();
+    console.table(data);
     selectUse();
 }
 
 function handleViewEmployees() {
-    db.query('SELECT * from employees', function (err, results) {
-        console.table(results);
-    });
+    const data = Queries.viewEmployees();
+    console.table(data);
     selectUse();
 }
 
