@@ -3,6 +3,16 @@ const mysql = require('mysql2');
 const Queries = require('./queryFunctions');
 const cTable = require('console.table');
 
+const db = mysql.createConnection(
+    {
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'employeeManager_db'
+    },
+    console.log('Connected to the employeeManager_db database')
+);
+
 function selectUse() {
     inquirer
     .prompt ([
@@ -33,23 +43,34 @@ function selectUse() {
 }
 
 function handleViewDepartments() {
-    const data = Queries.viewDepartments();
-    console.log(data);
-    console.table(data);
-    selectUse();
+        db.query('SELECT * from departments', function (err, results) {
+            if (err) {
+                console.log(err);
+            }
+            console.table('\n', results);
+            selectUse();
+        });
 }
 
 function handleViewRoles() {
-    const data = Queries.viewRoles();
-    console.log('returned view roles');
-    console.table(data);
-    selectUse();
-}
-
-function handleViewEmployees() {
-    const data = Queries.viewEmployees();
-    console.table(data);
-    selectUse();
+    console.log('view roles query');
+        db.query('SELECT * from roles', function (err, results) {
+            if (err) {
+                console.log(err);
+            }
+            console.table('\n', results);
+            selectUse();
+        });
+    }
+    
+    function handleViewEmployees() {
+        db.query('SELECT * from employees', function (err, results) {
+            if (err) {
+                console.log(err);
+            }
+            console.table('\n', results);
+            selectUse();
+        });
 }
 
 function handleAddDepartment() {
@@ -63,15 +84,24 @@ function handleAddDepartment() {
     ])
     .then((response) => {
         data = response;
-        Queries.addDepartment(data.addedDepartment);
-        const tableData = Queries.viewDepartments();
-        console.table(tableData);
-        selectUse();
+        db.query(`INSERT INTO departments (department_name) VALUES ('${data.addedDepartment}');`, (err, result) => {
+            if(err) {
+                console.log(err);
+            }
+            console.log('Department added successfully!');
+            selectUse();
+        });
     })
     
 }
 
 function handleAddRole() {
+    const departments = db.query('SELECT department_name FROM departments;', function (err, results) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    console.log(departments);
     inquirer
     .prompt ([
         {

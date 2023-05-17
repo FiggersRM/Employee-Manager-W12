@@ -38,16 +38,10 @@ class Queries {
     }
 
     addDepartment (department_name) {
-        db.query(`INSERT INTO departments (department_name) VALUES (${department_name});`, (err, result) => {
-            if(err) {
-                console.log(err);
-            }
-            console.log(result);
-        });
     }
 
     addRole (title, salary, departmentId) {
-        db.query(`INSERT INTO roles (title, salary, department_id) VALUES (${title}, ${salary}, ${departmentId});`);
+        db.query(`INSERT INTO roles (title, salary, department_id) VALUES ('${title}', ${salary}, ${departmentId});`);
         console.log('Role added successfully');
     }
 
