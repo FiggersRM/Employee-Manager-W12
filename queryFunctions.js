@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const cTable = require('console.table');
 
 const db = mysql.createConnection(
     {
@@ -14,27 +15,35 @@ class Queries {
     viewDepartments () {
         console.log('view departments query');
         db.query('SELECT * from departments', function (err, results) {
-            return results;
+            if (err) {
+                console.log(err);
+            }
+            const data = results;
+            return data;
         });
     }
 
     viewRoles() {
         console.log('view roles query');
         db.query('SELECT * from roles', function (err, results) {
-            return results;
+            console.table(results);
         });
     }
 
     viewEmployees() {
         console.log('view employees query');
         db.query('SELECT * from employees', function (err, results) {
-            return results;
+            console.table(results);
         });
     }
 
-    addDepartment (name) {
-        db.query(`INSERT INTO departments (name) VALUES (${name});`);
-        console.log('Department added successfully');
+    addDepartment (department_name) {
+        db.query(`INSERT INTO departments (department_name) VALUES (${department_name});`, (err, result) => {
+            if(err) {
+                console.log(err);
+            }
+            console.log(result);
+        });
     }
 
     addRole (title, salary, departmentId) {
@@ -48,4 +57,6 @@ class Queries {
     }
 }
 
-module.exports = Queries;
+const QueryObj = new Queries;
+
+module.exports = QueryObj;

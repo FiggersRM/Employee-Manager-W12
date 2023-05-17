@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
-const cTable = require('console.table');
+const mysql = require('mysql2');
 const Queries = require('./queryFunctions');
+const cTable = require('console.table');
 
 function selectUse() {
     inquirer
@@ -33,12 +34,14 @@ function selectUse() {
 
 function handleViewDepartments() {
     const data = Queries.viewDepartments();
+    console.log(data);
     console.table(data);
     selectUse();
 }
 
 function handleViewRoles() {
     const data = Queries.viewRoles();
+    console.log('returned view roles');
     console.table(data);
     selectUse();
 }
@@ -129,7 +132,8 @@ function handleAddEmployee() {
     })
 }
 
+selectUse ();
+
 function handleUpdateRole() {
     
 }
-selectUse ();
