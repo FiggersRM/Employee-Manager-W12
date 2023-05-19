@@ -1,1 +1,0 @@
-SELECT department_name FROM departments;
